@@ -36,7 +36,7 @@ Manage Budget System adalah platform yang memungkinkan pengguna untuk mengatur k
 1. Mulai server Node.js:
 
     ```bash
-    npm start
+    npm run mbs-dev:start
     ```
 
 2. Buka aplikasi di browser dengan alamat `http://localhost:3000`.
