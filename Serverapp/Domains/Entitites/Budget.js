@@ -61,6 +61,7 @@ const Budget = db.define(
   },
   {
     freezeTableName: true,
+    timestamps: false,
   }
 );
 
