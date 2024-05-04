@@ -1,8 +1,9 @@
 import Budget from "../Domains/Entitites/Budget.js";
 import { handleResponse } from "../Domains/Constants/HandleResponse.js";
 import { handleError } from "../Domains/Constants/HandleError.js";
+import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
 
-export const getById = async (req, res) => {
+async function getById(req, res) {
   try {
     const response = await Budget.findOne({
       where: {
@@ -22,4 +23,25 @@ export const getById = async (req, res) => {
   } catch (error) {
     handleError(res, error);
   }
+}
+
+async function getAllBudget(req, res) {
+  const { page, pageSize } = req.query;
+  const { limit, offset } = getPagination(page, pageSize);
+
+  try {
+    const data = await Budget.findAndCountAll({
+      limit: limit,
+      offset: offset,
+    });
+    const response = getPagingData(data, page, limit);
+    res.send(response);
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
+module.exports = {
+  getById,
+  getAllBudget,
 };
