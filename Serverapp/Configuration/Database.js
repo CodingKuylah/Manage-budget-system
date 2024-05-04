@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 
-const db = new Sequelize("MANAGEMENT_BUDGET_SYSTEM", "root", "", {
+const db = new Sequelize("db_MANAGEMENT_BUDGET_SYSTEM", "root", "", {
   host: "localhost",
   dialect: "mysql",
   logging: console.log(),
