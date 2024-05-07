@@ -1,27 +1,27 @@
 import { Sequelize } from "sequelize";
 import db from "../../Configuration/Database.js";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuid4 } from "uuid";
 
-const { DataTypes } = Sequelize;
+const { Datatypes } = Sequelize;
 
-const Budget = db.define(
-  "tb_m_budgets",
+const Income = db.define(
+  "tb_m_income",
   {
     id: {
-      type: DataTypes.STRING,
+      type: Datatypes.STRING,
       primaryKey: true,
-      defaultValue: uuidv4(),
+      defaultValue: uuid4(),
       allowNull: false,
     },
     title: {
-      type: DataTypes.STRING,
+      type: Datatypes.STRING,
       allowNull: false,
       validate: {
         len: [5, 150],
       },
     },
     description: {
-      type: DataTypes.STRING,
+      type: Datatypes.STRING,
       allowNull: true,
       validate: {
         len: [5, 350],
@@ -65,13 +65,13 @@ const Budget = db.define(
   }
 );
 
-export default Budget;
+export default Income;
 
 (async () => {
   try {
     await db.sync();
-    console.log("db connecteed");
+    console.log("Income connected");
   } catch (error) {
-    console.error("error syncing budget database" + error);
+    console.error("error syncing Income database " + error);
   }
 })();

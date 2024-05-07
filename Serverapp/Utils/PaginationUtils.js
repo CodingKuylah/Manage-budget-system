@@ -13,7 +13,4 @@ function getPagingData(data, page, limit) {
   return { totalItem, items, totalPages, currentPage };
 }
 
-module.exports = {
-  getPagination,
-  getPagingData,
-};
+export { getPagination, getPagingData };
