@@ -41,7 +41,4 @@ async function getAllBudget(req, res) {
   }
 }
 
-module.exports = {
-  getById,
-  getAllBudget,
-};
+export { getById, getAllBudget };
