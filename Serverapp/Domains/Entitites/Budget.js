@@ -49,15 +49,12 @@ const Budget = db.define(
     },
     updated_by: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     deleted_at: {
       type: DataTypes.DATE,
-      allowNull: true,
     },
     delete_by: {
       type: DataTypes.STRING,
-      allowNull: true,
     },
     is_deleted: {
       type: DataTypes.INTEGER,
