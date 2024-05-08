@@ -28,6 +28,11 @@ const Budget = db.define(
         len: [5, 350],
       },
     },
+    total_balance: {
+      type: DataTypes.DECIMAL(20, 2),
+      allowNull: false,
+      defaultValue: 0.0,
+    },
     created_date: {
       type: DataTypes.DATE,
       allowNull: false,
