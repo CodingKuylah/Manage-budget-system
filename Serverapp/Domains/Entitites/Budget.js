@@ -75,7 +75,6 @@ export default Budget;
 (async () => {
   try {
     await db.sync();
-    console.log("db connecteed");
   } catch (error) {
     console.error("error syncing budget database" + error);
   }
