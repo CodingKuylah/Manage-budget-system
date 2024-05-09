@@ -2,26 +2,26 @@ import { Sequelize } from "sequelize";
 import db from "../../Configuration/Database.js";
 import { v4 as uuid4 } from "uuid";
 
-const { Datatypes } = Sequelize;
+const { DataTypes } = Sequelize;
 
 const Income = db.define(
   "tb_m_income",
   {
     id: {
-      type: Datatypes.STRING,
+      type: DataTypes.STRING,
       primaryKey: true,
       defaultValue: uuid4(),
       allowNull: false,
     },
     title: {
-      type: Datatypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         len: [5, 150],
       },
     },
     description: {
-      type: Datatypes.STRING,
+      type: DataTypes.STRING,
       allowNull: true,
       validate: {
         len: [5, 350],
@@ -70,7 +70,6 @@ export default Income;
 (async () => {
   try {
     await db.sync();
-    console.log("Income connected");
   } catch (error) {
     console.error("error syncing Income database " + error);
   }
