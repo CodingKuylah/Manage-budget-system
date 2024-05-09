@@ -7,8 +7,8 @@ import {
 
 const router = express.Router();
 
-router.get("budget/:id", getById);
-router.get("budget", getAllBudget);
-router.post("budget", createBudget);
+router.get("/budget/:id", getById);
+router.get("/budget", getAllBudget);
+router.post("/budget", createBudget);
 
 export default router;
