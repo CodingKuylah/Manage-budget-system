@@ -15,7 +15,7 @@ class BudgetRequest {
       errors.push("Title length is 150 max words");
     }
     if (this.description.length < 5) {
-      errors.push("Title length cannot under 5 words !");
+      errors.push("description length cannot under 5 words !");
     }
     if (this.description.length > 150) {
       errors.push("Title description is 350 max words");
