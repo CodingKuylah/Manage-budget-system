@@ -3,6 +3,8 @@ import { handleResponse } from "../Domains/Constants/HandleResponse.js";
 import { handleError } from "../Domains/Constants/HandleError.js";
 import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
 import BudgetRequest from "../Domains/Models/Requests/BudgetRequest.js";
+import Budget from "../Domains/Entitites/Budget.js";
+import { where } from "sequelize";
 
 async function getById(req, res) {
   try {
@@ -63,4 +65,24 @@ async function createBudget(req, res) {
   }
 }
 
-export { getById, getAllBudget, createBudget };
+async function deleteBudget(req, res) {
+  try {
+    const id = req.params.id;
+    const budget = await Budget.findOne({
+      where: {
+        id: id,
+        is_deleted: 0,
+      },
+    });
+    if (budget) {
+      budget.is_deleted = 1;
+      await budget.save();
+      handleResponse(res, budget, 200, "Budget is successfully been deleted");
+    } else {
+      res.status(404).json({ error: "budget id is not found" });
+    }
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+export { getById, getAllBudget, createBudget, deleteBudget };
