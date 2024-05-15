@@ -9,8 +9,8 @@ import {
 const router = express.Router();
 
 router.get("/budget/:id", getById);
-router.get("/budget", getAllBudget);
+router.get("admin/budget", getAllBudget);
 router.post("/budget", createBudget);
-router.delete("/budget/:id", deleteBudget);
+router.delete("admin/budget/:id", deleteBudget);
 
 export default router;
