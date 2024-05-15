@@ -3,23 +3,21 @@ import { handleResponse } from "../Domains/Constants/HandleResponse.js";
 import { handleError } from "../Domains/Constants/HandleError.js";
 import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
 import BudgetRequest from "../Domains/Models/Requests/BudgetRequest.js";
-import Budget from "../Domains/Entitites/Budget.js";
-import { where } from "sequelize";
 
 async function getById(req, res) {
+  const { page, pageSize } = req.query;
+  const { limit, offset } = getPagination(page, pageSize);
   try {
-    const response = await Budget.findOne({
+    const data = await Budget.findOne({
+      limit: limit,
+      offset: offset,
       where: {
         id: req.params.id,
       },
     });
-    if (response) {
-      handleResponse(
-        res,
-        response,
-        200,
-        "Budget " + req.params.id + " successfully retrieved"
-      );
+    if (data) {
+      const response = getPagingData(data, page, limit);
+      res.send(response);
     } else {
       res.status(404).json({ error: "Budget is not found" });
     }
