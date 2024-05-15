@@ -5,19 +5,14 @@ import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
 import BudgetRequest from "../Domains/Models/Requests/BudgetRequest.js";
 
 async function getById(req, res) {
-  const { page, pageSize } = req.query;
-  const { limit, offset } = getPagination(page, pageSize);
   try {
     const data = await Budget.findOne({
-      limit: limit,
-      offset: offset,
       where: {
         id: req.params.id,
       },
     });
     if (data) {
-      const response = getPagingData(data, page, limit);
-      res.send(response);
+      handleResponse(res, data, 200, "Budget successfully retrived");
     } else {
       res.status(404).json({ error: "Budget is not found" });
     }
