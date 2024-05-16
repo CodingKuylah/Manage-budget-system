@@ -1,6 +1,7 @@
 import Income from "../Domains/Entitites/Income.js";
 import { handleError } from "../Domains/Constants/HandleError.js";
 import { handleResponse } from "../Domains/Constants/HandleResponse.js";
+import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
 
 async function getIncomeById(req, res) {
   try {
@@ -19,4 +20,19 @@ async function getIncomeById(req, res) {
   }
 }
 
-export { getIncomeById };
+async function getAllIncome(req, res) {
+  const { page, pageSize } = req.query;
+  const { limit, offset } = getPagination(page, pageSize);
+  try {
+    const data = await Income.findAndCountAll({
+      limit: limit,
+      offset: offset,
+    });
+    const response = getPagingData(data, page, limit);
+    res.send(response);
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
+export { getIncomeById, getAllIncome };
