@@ -2,7 +2,6 @@ import Outcome from "../Domains/Entitites/Outcome.js";
 import { handleError } from "../Domains/Constants/HandleError.js";
 import { handleResponse } from "../Domains/Constants/HandleResponse.js";
 import { getPagingData, getPagination } from "../Utils/PaginationUtils.js";
-import { where } from "sequelize";
 
 async function getOutcomeById(req, res) {
   try {
