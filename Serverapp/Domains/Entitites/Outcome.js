@@ -65,10 +65,12 @@ const Outcome = db.define(
   }
 );
 
-export default Outcome(async () => {
+export default Outcome;
+
+async () => {
   try {
     await db.sync();
   } catch (error) {
     console.error("Error syncing Outcome database " + error);
   }
-});
+};
