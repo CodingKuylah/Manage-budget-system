@@ -5,12 +5,13 @@ import {
   createBudget,
   deleteBudget,
 } from "../Controller/BudgetController.js";
+import { baseRoute } from "./Base/BaseRoute.js";
 
 const router = express.Router();
 
-router.get("/budget/:id", getById);
-router.get("admin/budget", getAllBudget);
-router.post("/budget", createBudget);
-router.delete("admin/budget/:id", deleteBudget);
+router.get(baseRoute + "budget/:id", getById);
+router.get(baseRoute + "admin/budget", getAllBudget);
+router.post(baseRoute + "budget", createBudget);
+router.delete(baseRoute + "admin/budget/:id", deleteBudget);
 
 export default router;
