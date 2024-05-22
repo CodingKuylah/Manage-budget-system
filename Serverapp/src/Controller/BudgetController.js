@@ -5,6 +5,7 @@ import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
 import BudgetRequest from "../Domains/Models/Requests/BudgetRequest.js";
 import Income from "../Domains/Entitites/Income.js";
 import Outcome from "../Domains/Entitites/Outcome.js";
+import BudgetResponse from "../Domains/Models/Responses/BudgetResponse.js";
 
 async function getById(req, res) {
   try {
@@ -59,22 +60,24 @@ async function createBudget(req, res) {
       title: "Default",
       description: "Default by system",
       created_by: "System",
-      budgetId: newBudget.id,
+      BudgetId: newBudget.id,
+      updated_by: "System",
     });
 
     const newOutcome = await Outcome.create({
       title: "Default",
       description: "Default by system",
       created_by: "System",
-      budgetId: newBudget.id,
+      BudgetId: newBudget.id,
+      updated_by: "System",
     });
 
     const handlingResponse = new BudgetResponse(
       newBudget.id,
       newBudget.title,
       newBudget.description,
-      newBudget.incomeId,
-      newBudget.outcomeId
+      newIncome.id,
+      newOutcome.id
     );
     handleResponse(res, handlingResponse, 200, "Budget successfully created !");
   } catch (error) {
