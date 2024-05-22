@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
 
-import BudgetRoute from "./Routes/BudgetRoute.js";
-import IncomeRoute from "./Routes/IncomeRoute.js";
-import OutcomeRoute from "./Routes/OutcomeRoute.js";
+import BudgetRoute from "./src/Routes/BudgetRoute.js";
+import IncomeRoute from "./src/Routes/IncomeRoute.js";
+import OutcomeRoute from "./src/Routes/OutcomeRoute.js";
 
 const app = express();
 app.use(cors());
