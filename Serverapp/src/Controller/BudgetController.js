@@ -3,6 +3,8 @@ import { handleResponse } from "../Domains/Constants/HandleResponse.js";
 import { handleError } from "../Domains/Constants/HandleError.js";
 import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
 import BudgetRequest from "../Domains/Models/Requests/BudgetRequest.js";
+import Income from "../Domains/Entitites/Income.js";
+import Outcome from "../Domains/Entitites/Outcome.js";
 
 async function getById(req, res) {
   try {
@@ -52,7 +54,29 @@ async function createBudget(req, res) {
       description: budgetRequest.description,
       created_by: "System",
     });
-    handleResponse(res, newBudget, 200, "Budget successfully created !");
+
+    const newIncome = await Income.create({
+      title: "Default",
+      description: "Default by system",
+      created_by: "System",
+      budgetId: newBudget.id,
+    });
+
+    const newOutcome = await Outcome.create({
+      title: "Default",
+      description: "Default by system",
+      created_by: "System",
+      budgetId: newBudget.id,
+    });
+
+    const handlingResponse = new BudgetResponse(
+      newBudget.id,
+      newBudget.title,
+      newBudget.description,
+      newBudget.incomeId,
+      newBudget.outcomeId
+    );
+    handleResponse(res, handlingResponse, 200, "Budget successfully created !");
   } catch (error) {
     handleError(res, error);
   }
