@@ -10,7 +10,7 @@ const Income = db.define(
     id: {
       type: DataTypes.STRING,
       primaryKey: true,
-      defaultValue: uuid4(),
+      defaultValue: () => uuid4(),
       allowNull: false,
     },
     title: {
