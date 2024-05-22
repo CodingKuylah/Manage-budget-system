@@ -12,8 +12,9 @@ const Budget = db.define(
     id: {
       type: DataTypes.STRING,
       primaryKey: true,
-      defaultValue: uuidv4(),
+      defaultValue: () => uuidv4(),
       allowNull: false,
+      unique: true,
     },
     title: {
       type: DataTypes.STRING,
