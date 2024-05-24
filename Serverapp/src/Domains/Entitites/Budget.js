@@ -31,7 +31,7 @@ const Budget = db.define(
       },
     },
     total_balance: {
-      type: DataTypes.DECIMAL(20, 2),
+      type: DataTypes.DECIMAL(20, 10),
       allowNull: false,
       defaultValue: 0.0,
     },
