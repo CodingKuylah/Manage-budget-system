@@ -27,6 +27,10 @@ const Income = db.define(
         len: [5, 350],
       },
     },
+    value: {
+      type: DataTypes.DECIMAL(20, 10),
+      allowNull: false,
+    },
     created_date: {
       type: DataTypes.DATE,
       allowNull: false,
