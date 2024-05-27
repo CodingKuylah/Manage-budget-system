@@ -2,6 +2,7 @@ import Income from "../Domains/Entitites/Income.js";
 import { handleError } from "../Domains/Constants/HandleError.js";
 import { handleResponse } from "../Domains/Constants/HandleResponse.js";
 import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
+import Budget from "../Domains/Entitites/Budget.js";
 
 async function getIncomeById(req, res) {
   try {
@@ -61,4 +62,51 @@ async function deleteIncome(req, res) {
   }
 }
 
-export { getIncomeById, getAllIncome, deleteIncome };
+async function plusIncomeValue(req, res) {
+  const incomeId = req.params.incomeId;
+  const { title, description, value, budgetId } = req.body;
+  try {
+    const income = await Income.findOne({
+      where: {
+        id: incomeId,
+        is_deleted: 0,
+      },
+    });
+    if (!income) {
+      handleResponse(res, null, 404, "income id is not found!");
+    }
+    income.title = title;
+    income.description = description;
+    income.value = value;
+    await income.save();
+
+    const budget = await Budget.findOne({
+      where: {
+        id: budgetId,
+        is_deleted: 0,
+      },
+    });
+
+    budget.total_balance = parseFloat(budget.total_balance) + parseFloat(value);
+    await budget.save();
+
+    const handlingResponse = new IncomeResponse(
+      income.id,
+      budget.id,
+      budget.title,
+      budget.description,
+      budget.total_balance
+    );
+
+    handleResponse(
+      res,
+      handlingResponse,
+      200,
+      "Income has successfully added to budget!"
+    );
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
+export { getIncomeById, getAllIncome, deleteIncome, plusIncomeValue };
