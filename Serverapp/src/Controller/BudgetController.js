@@ -62,6 +62,7 @@ async function createBudget(req, res) {
       created_by: "System",
       BudgetId: newBudget.id,
       updated_by: "System",
+      value: 0.0,
     });
 
     const newOutcome = await Outcome.create({
@@ -70,6 +71,7 @@ async function createBudget(req, res) {
       created_by: "System",
       BudgetId: newBudget.id,
       updated_by: "System",
+      value: 0.0,
     });
 
     const handlingResponse = new BudgetResponse(
