@@ -1,4 +1,5 @@
 import Income from "../Domains/Entitites/Income.js";
+import IncomeResponse from "../Domains/Models/Responses/IncomeResponse.js";
 import { handleError } from "../Domains/Constants/HandleError.js";
 import { handleResponse } from "../Domains/Constants/HandleResponse.js";
 import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
@@ -95,6 +96,7 @@ async function plusIncomeValue(req, res) {
       budget.id,
       budget.title,
       budget.description,
+      income.value,
       budget.total_balance
     );
 
