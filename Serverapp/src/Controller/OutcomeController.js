@@ -2,6 +2,8 @@ import Outcome from "../Domains/Entitites/Outcome.js";
 import { handleError } from "../Domains/Constants/HandleError.js";
 import { handleResponse } from "../Domains/Constants/HandleResponse.js";
 import { getPagingData, getPagination } from "../Utils/PaginationUtils.js";
+import Budget from "../Domains/Entitites/Budget.js";
+import OutcomeResponse from "../Domains/Models/Responses/OutcomeResponse.js";
 
 async function getOutcomeById(req, res) {
   try {
@@ -35,6 +37,63 @@ async function getAllOutcome(req, res) {
   }
 }
 
+async function minusOutcomeValue(req, res) {
+  const outcomeId = req.params.outcomeId;
+  const { title, description, value, approval_status, budgetId } = req.body;
+  try {
+    const outcome = await Outcome.findOne({
+      where: {
+        id: outcomeId,
+        is_deleted: 0,
+      },
+    });
+    if (!outcome) {
+      handleResponse(res, null, 404, "Outcome id is not found!");
+    }
+    outcome.title = title;
+    outcome.description = description;
+    outcome.value = value;
+    outcome.approval_status = approval_status;
+    if (approval_status == "REJECTED") {
+      return handleResponse(
+        res,
+        null,
+        401,
+        "Cannot minus value budget (status rejected)"
+      );
+    }
+    await outcome.save();
+
+    const budget = await Budget.findOne({
+      where: {
+        id: budgetId,
+        is_deleted: 0,
+      },
+    });
+    budget.total_balance = parseFloat(budget.total_balance) - parseFloat(value);
+    await budget.save();
+
+    const handlingResponse = new OutcomeResponse(
+      outcomeId,
+      budgetId,
+      outcome.title,
+      outcome.description,
+      outcome.value,
+      outcome.approval_status,
+      budget.total_balance
+    );
+
+    handleResponse(
+      res,
+      handlingResponse,
+      200,
+      "Outcome has succsessfully minus to budget!"
+    );
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
 async function deleteOutcome(req, res) {
   try {
     const id = req.params.id;
@@ -59,4 +118,4 @@ async function deleteOutcome(req, res) {
   }
 }
 
-export { getOutcomeById, getAllOutcome, deleteOutcome };
+export { getOutcomeById, getAllOutcome, minusOutcomeValue, deleteOutcome };
