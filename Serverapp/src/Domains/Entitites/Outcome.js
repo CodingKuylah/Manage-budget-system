@@ -31,6 +31,11 @@ const Outcome = db.define(
       type: DataTypes.DECIMAL(20, 3),
       allowNull: false,
     },
+    approval_status: {
+      type: DataTypes.ENUM,
+      values: ["APPROVED", "REJECTED"],
+      allowNull: false,
+    },
     created_date: {
       type: DataTypes.DATE,
       allowNull: false,
