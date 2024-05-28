@@ -68,6 +68,7 @@ async function createBudget(req, res) {
     const newOutcome = await Outcome.create({
       title: "Default",
       description: "Default by system",
+      approval_status: "APPROVED",
       created_by: "System",
       BudgetId: newBudget.id,
       updated_by: "System",
