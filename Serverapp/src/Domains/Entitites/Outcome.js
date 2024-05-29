@@ -22,12 +22,12 @@ const Outcome = db.define(
     },
     description: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       validate: {
         len: [5, 350],
       },
     },
-    value: {
+    amount: {
       type: DataTypes.DECIMAL(20, 3),
       allowNull: false,
     },
