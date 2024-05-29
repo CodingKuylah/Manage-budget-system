@@ -6,6 +6,7 @@ import BudgetRequest from "../Domains/Models/Requests/BudgetRequest.js";
 import Income from "../Domains/Entitites/Income.js";
 import Outcome from "../Domains/Entitites/Outcome.js";
 import BudgetResponse from "../Domains/Models/Responses/BudgetResponse.js";
+import Histories from "../Domains/Entitites/Histories.js";
 
 async function getById(req, res) {
   try {
@@ -41,18 +42,22 @@ async function getAllBudget(req, res) {
 }
 
 async function createBudget(req, res) {
-  const { title, description } = req.body;
-  const budgetRequest = new BudgetRequest(title, description);
+  const { title, description, total_balance } = req.body;
+  const budgetRequest = new BudgetRequest(title, description, total_balance);
   const validationErrors = budgetRequest.validate();
 
   if (validationErrors.length > 0) {
     res.status(400).json({ errors: validationErrors });
     return;
   }
+
+  const finalTotalBalance = total_balance || 0.0;
+
   try {
     const newBudget = await Budget.create({
       title: budgetRequest.title,
       description: budgetRequest.description,
+      total_balance: finalTotalBalance,
       created_by: "System",
     });
 
@@ -62,7 +67,7 @@ async function createBudget(req, res) {
       created_by: "System",
       BudgetId: newBudget.id,
       updated_by: "System",
-      value: 0.0,
+      amount: 0.0,
     });
 
     const newOutcome = await Outcome.create({
@@ -72,7 +77,15 @@ async function createBudget(req, res) {
       created_by: "System",
       BudgetId: newBudget.id,
       updated_by: "System",
-      value: 0.0,
+      amount: 0.0,
+    });
+
+    const newHistory = await Histories.create({
+      title: budgetRequest.title,
+      description: budgetRequest.description,
+      amount: 0.0,
+      total_balance: finalTotalBalance,
+      created_by: "System",
     });
 
     const handlingResponse = new BudgetResponse(
