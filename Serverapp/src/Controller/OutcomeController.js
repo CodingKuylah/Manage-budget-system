@@ -39,7 +39,7 @@ async function getAllOutcome(req, res) {
 
 async function minusOutcomeValue(req, res) {
   const outcomeId = req.params.outcomeId;
-  const { title, description, value, approval_status, budgetId } = req.body;
+  const { title, description, amount, approval_status, budgetId } = req.body;
   try {
     const outcome = await Outcome.findOne({
       where: {
@@ -52,14 +52,14 @@ async function minusOutcomeValue(req, res) {
     }
     outcome.title = title;
     outcome.description = description;
-    outcome.value = value;
+    outcome.amount = amount;
     outcome.approval_status = approval_status;
     if (approval_status == "REJECTED") {
       return handleResponse(
         res,
         null,
         401,
-        "Cannot minus value budget (status rejected)"
+        "Cannot minus amount budget (status rejected)"
       );
     }
     await outcome.save();
@@ -70,7 +70,8 @@ async function minusOutcomeValue(req, res) {
         is_deleted: 0,
       },
     });
-    budget.total_balance = parseFloat(budget.total_balance) - parseFloat(value);
+    budget.total_balance =
+      parseFloat(budget.total_balance) - parseFloat(amount);
     await budget.save();
 
     const handlingResponse = new OutcomeResponse(
@@ -78,7 +79,7 @@ async function minusOutcomeValue(req, res) {
       budgetId,
       outcome.title,
       outcome.description,
-      outcome.value,
+      outcome.amount,
       outcome.approval_status,
       budget.total_balance
     );
