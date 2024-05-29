@@ -65,7 +65,7 @@ async function deleteIncome(req, res) {
 
 async function plusIncomeValue(req, res) {
   const incomeId = req.params.incomeId;
-  const { title, description, value, budgetId } = req.body;
+  const { title, description, amount, budgetId } = req.body;
   try {
     const income = await Income.findOne({
       where: {
@@ -78,7 +78,7 @@ async function plusIncomeValue(req, res) {
     }
     income.title = title;
     income.description = description;
-    income.value = value;
+    income.amount = amount;
     await income.save();
 
     const budget = await Budget.findOne({
@@ -88,7 +88,8 @@ async function plusIncomeValue(req, res) {
       },
     });
 
-    budget.total_balance = parseFloat(budget.total_balance) + parseFloat(value);
+    budget.total_balance =
+      parseFloat(budget.total_balance) + parseFloat(amount);
     await budget.save();
 
     const handlingResponse = new IncomeResponse(
@@ -96,7 +97,7 @@ async function plusIncomeValue(req, res) {
       budget.id,
       budget.title,
       budget.description,
-      income.value,
+      income.amount,
       budget.total_balance
     );
 
