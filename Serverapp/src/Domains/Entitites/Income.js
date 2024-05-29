@@ -27,7 +27,7 @@ const Income = db.define(
         len: [5, 350],
       },
     },
-    value: {
+    amount: {
       type: DataTypes.DECIMAL(20, 3),
       allowNull: false,
     },
