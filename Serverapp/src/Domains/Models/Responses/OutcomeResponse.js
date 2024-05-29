@@ -4,7 +4,7 @@ class OutcomeResponse {
     budgetId,
     title,
     description,
-    value,
+    amount,
     approval_status,
     total_balance
   ) {
@@ -12,7 +12,7 @@ class OutcomeResponse {
     this.budgetId = budgetId;
     this.title = title;
     this.description = description;
-    this.value = value;
+    this.amount = amount;
     this.approval_status = approval_status;
     this.total_balance = total_balance;
   }

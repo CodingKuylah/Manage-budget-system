@@ -1,7 +1,8 @@
 class BudgetRequest {
-  constructor(title, description) {
+  constructor(title, description, total_balance) {
     this.title = title;
     this.description = description;
+    this.total_balance = total_balance;
   }
   validate() {
     const errors = [];
