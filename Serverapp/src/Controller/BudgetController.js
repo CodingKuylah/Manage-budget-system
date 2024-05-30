@@ -85,7 +85,11 @@ async function createBudget(req, res) {
       description: budgetRequest.description,
       amount: 0.0,
       total_balance: finalTotalBalance,
+      type: "BUDGET_CREATE",
       created_by: "System",
+      incomeId: newIncome.id,
+      outcomeId: newOutcome.id,
+      budgetId: newBudget.id,
     });
 
     const handlingResponse = new BudgetResponse(
