@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get(baseRoute + "outcome/:id", getOutcomeById);
 router.get(baseRoute + "admin/outcome", getAllOutcome);
-router.post(baseRoute + "outcome/minus-budget/:outcomeId", minusOutcomeValue);
+router.put(baseRoute + "outcome/minus-budget/:outcomeId", minusOutcomeValue);
 router.delete(baseRoute + "outcome/:id", deleteOutcome);
 
 export default router;
