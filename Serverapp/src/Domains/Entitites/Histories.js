@@ -36,6 +36,11 @@ const Histories = db.define(
       type: DataTypes.DECIMAL(20, 3),
       allowNull: false,
     },
+    type: {
+      type: DataTypes.ENUM,
+      values: ["INCOME", "OUTCOME", "BUDGET_CREATE"],
+      allowNull: false,
+    },
     created_date: {
       type: DataTypes.DATE,
       allowNull: false,
