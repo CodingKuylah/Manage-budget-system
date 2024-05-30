@@ -4,6 +4,7 @@ import { handleResponse } from "../Domains/Constants/HandleResponse.js";
 import { getPagingData, getPagination } from "../Utils/PaginationUtils.js";
 import Budget from "../Domains/Entitites/Budget.js";
 import OutcomeResponse from "../Domains/Models/Responses/OutcomeResponse.js";
+import Histories from "../Domains/Entitites/Histories.js";
 
 async function getOutcomeById(req, res) {
   try {
@@ -73,6 +74,17 @@ async function minusOutcomeValue(req, res) {
     budget.total_balance =
       parseFloat(budget.total_balance) - parseFloat(amount);
     await budget.save();
+
+    const newHistory = await Histories.create({
+      title: title,
+      description: description,
+      amount: amount,
+      total_balance: budget.total_balance,
+      type: "OUTCOME",
+      created_by: "System",
+      outcomeId: outcomeId,
+      budgetId: budgetId,
+    });
 
     const handlingResponse = new OutcomeResponse(
       outcomeId,
