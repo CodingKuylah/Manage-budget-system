@@ -3,6 +3,7 @@ import db from "../../Configuration/Database.js";
 import { v4 as uuidv4 } from "uuid";
 import Income from "./Income.js";
 import Outcome from "./Outcome.js";
+import Histories from "./Histories.js";
 
 const { DataTypes } = Sequelize;
 
@@ -72,6 +73,7 @@ const Budget = db.define(
 
 Budget.hasMany(Income, { foreignKey: "BudgetId" });
 Budget.hasMany(Outcome, { foreignKey: "BudgetId" });
+Budget.hasMany(Histories, { foreignKey: "budgetId" });
 
 export default Budget;
 
