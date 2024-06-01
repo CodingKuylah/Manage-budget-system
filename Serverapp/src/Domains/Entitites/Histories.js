@@ -12,7 +12,6 @@ const Histories = db.define(
       primaryKey: true,
       defaultValue: () => uuidv4(),
       allowNull: false,
-      //   unique: true,
     },
     title: {
       type: DataTypes.STRING,
