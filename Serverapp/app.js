@@ -6,19 +6,31 @@ import IncomeRoute from "./src/Routes/IncomeRoute.js";
 import OutcomeRoute from "./src/Routes/OutcomeRoute.js";
 import HistoriesRoute from "./src/Routes/HistoriesRoute.js";
 import AuthRoute from "./src/Routes/AuthRoute.js";
-import Account from "./src/Domains/Entitites/Account.js";
-import User from "./src/Domains/Entitites/User.js";
-
-// User.hasOne(Account, { foreignKey: "user_id", as: "account" });
-// Account.belongsTo(User, { foreignKey: "user_id", as: "user" });
+import db from "./src/Configuration/Database.js";
+import "./src/Domains/Entitites/Association/EntityAssociation.js";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(BudgetRoute, IncomeRoute, OutcomeRoute, HistoriesRoute, AuthRoute);
 
-app.listen("5000", () => {
-  console.log(
-    "\n <==================> \n Server App is Running \n <==================> \n"
-  );
-});
+db.authenticate()
+  .then(() => {
+    console.log("db is connected");
+    // db.sync({ force: true })
+    db.sync({ alter: true })
+      .then(() => {
+        app.listen("5000", () => {
+          console.log(
+            "\n <==================> \n Server App is Running \n <==================> \n"
+          );
+        });
+      })
+      .catch((error) => {
+        console.error("failed to connect to database");
+      });
+  })
+  .catch((error) => {
+    console.error("cannot connect to database");
+  });
+
+app.use(BudgetRoute, IncomeRoute, OutcomeRoute, HistoriesRoute, AuthRoute);
