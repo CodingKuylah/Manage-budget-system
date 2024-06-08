@@ -1,7 +1,6 @@
 import { Sequelize } from "sequelize";
 import db from "../../Configuration/Database.js";
 import { v4 as uuidv4 } from "uuid";
-import User from "./User.js";
 
 const { DataTypes } = Sequelize;
 
@@ -13,6 +12,10 @@ const Account = db.define(
       primaryKey: true,
       defaultValue: () => uuidv4,
       allowNull: false,
+      references: {
+        model: "tb_m_users",
+        key: "id",
+      },
     },
     username: {
       type: DataTypes.STRING,
@@ -56,17 +59,17 @@ const Account = db.define(
   }
 );
 
-Account.belongsTo(User, {
-  foreignKey: "user_id",
-  as: "user",
-});
+// Account.belongsTo(User, {
+//   foreignKey: "user_id",
+//   as: "user",
+// });
 
 export default Account;
 
-async () => {
-  try {
-    await db.sync();
-  } catch (error) {
-    console.error("error syncing account database" + error);
-  }
-};
+// async () => {
+//   try {
+//     await db.sync();
+//   } catch (error) {
+//     console.error("error syncing account database" + error);
+//   }
+// };
