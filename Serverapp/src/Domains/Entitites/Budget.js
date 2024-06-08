@@ -71,16 +71,16 @@ const Budget = db.define(
   }
 );
 
-Budget.hasMany(Income, { foreignKey: "BudgetId" });
-Budget.hasMany(Outcome, { foreignKey: "BudgetId" });
-Budget.hasMany(Histories, { foreignKey: "budgetId" });
+// Budget.hasMany(Income, { foreignKey: "BudgetId" });
+// Budget.hasMany(Outcome, { foreignKey: "BudgetId" });
+// Budget.hasMany(Histories, { foreignKey: "budgetId" });
 
 export default Budget;
 
-(async () => {
-  try {
-    await db.sync();
-  } catch (error) {
-    console.error("error syncing budget database" + error);
-  }
-})();
+// (async () => {
+//   try {
+//     await db.sync();
+//   } catch (error) {
+//     console.error("error syncing budget database" + error);
+//   }
+// })();
