@@ -58,10 +58,10 @@ const Histories = db.define(
 
 export default Histories;
 
-async () => {
-  try {
-    await db.sync();
-  } catch (error) {
-    console.error("error syncing histories database " + error);
-  }
-};
+// async () => {
+//   try {
+//     await db.sync();
+//   } catch (error) {
+//     console.error("error syncing histories database " + error);
+//   }
+// };
