@@ -1,7 +1,6 @@
 import { Sequelize } from "sequelize";
 import db from "../../Configuration/Database.js";
 import { v4 as uuidv4 } from "uuid";
-import Account from "./Account.js";
 
 const { DataTypes } = Sequelize;
 
@@ -64,17 +63,17 @@ const User = db.define(
   }
 );
 
-User.hasOne(Account, {
-  foreignKey: "user_id",
-  as: "account",
-});
+// User.hasOne(Account, {
+//   foreignKey: "user_id",
+//   as: "account",
+// });
 
 export default User;
 
-async () => {
-  try {
-    await db.sync();
-  } catch (error) {
-    console.error("error syncing user database" + error);
-  }
-};
+// async () => {
+//   try {
+//     await db.sync();
+//   } catch (error) {
+//     console.error("error syncing user database" + error);
+//   }
+// };
