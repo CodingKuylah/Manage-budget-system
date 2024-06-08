@@ -75,13 +75,13 @@ const Outcome = db.define(
   }
 );
 
-Outcome.hasMany(Histories, { foreignKey: "outcomeId" });
+// Outcome.hasMany(Histories, { foreignKey: "outcomeId" });
 export default Outcome;
 
-async () => {
-  try {
-    await db.sync();
-  } catch (error) {
-    console.error("Error syncing Outcome database " + error);
-  }
-};
+// async () => {
+//   try {
+//     await db.sync();
+//   } catch (error) {
+//     console.error("Error syncing Outcome database " + error);
+//   }
+// };
