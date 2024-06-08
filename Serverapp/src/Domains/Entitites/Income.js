@@ -70,14 +70,14 @@ const Income = db.define(
   }
 );
 
-Income.hasMany(Histories, { foreignKey: "incomeId" });
+// Income.hasMany(Histories, { foreignKey: "incomeId" });
 
 export default Income;
 
-(async () => {
-  try {
-    await db.sync();
-  } catch (error) {
-    console.error("error syncing Income database " + error);
-  }
-})();
+// (async () => {
+//   try {
+//     await db.sync();
+//   } catch (error) {
+//     console.error("error syncing Income database " + error);
+//   }
+// })();
