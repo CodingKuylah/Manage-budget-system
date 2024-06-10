@@ -4,7 +4,7 @@ dotenv.config();
 
 export const jwtconfig = {
   secret:
-    process.env.JWT_SECRET ||
+    process.env.SECRET_KEY ||
     "$2a$15$C1yQmr5YAEHjmfNFrnGaa.HxsBQ9H169YSIbV6Faj4nRYYHJUJTn2",
   expiresIn: "1h",
 };
