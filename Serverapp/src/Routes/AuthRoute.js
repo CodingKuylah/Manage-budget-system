@@ -4,6 +4,6 @@ import { baseRoute } from "./Base/BaseRoute.js";
 
 const router = express.Router();
 
-router.post(baseRoute + "register", register);
+router.post(baseRoute + "idp/register", register);
 
 export default router;
