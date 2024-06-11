@@ -18,11 +18,11 @@ User.hasOne(Account, {
 // relation one to one between account and user end
 
 // relation one to many between budget and income
-Budget.hasMany(Income, { foreignKey: "BudgetId" });
+Budget.hasMany(Income, { foreignKey: "budgetId" });
 // relation one to many between budget and income end
 
 // relation one to many between budget and outcome
-Budget.hasMany(Outcome, { foreignKey: "BudgetId" });
+Budget.hasMany(Outcome, { foreignKey: "budgetId" });
 // relation one to many between budget and income end
 
 // relation one to many between budget and histories
