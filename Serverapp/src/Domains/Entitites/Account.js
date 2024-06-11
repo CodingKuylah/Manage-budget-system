@@ -10,7 +10,7 @@ const Account = db.define(
     id: {
       type: DataTypes.STRING,
       primaryKey: true,
-      defaultValue: () => uuidv4,
+      defaultValue: () => uuidv4(),
       allowNull: false,
       references: {
         model: "tb_m_users",
@@ -28,8 +28,11 @@ const Account = db.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    verificationCode: {
+    verification_code: {
       type: DataTypes.STRING,
+    },
+    refresh_token: {
+      type: DataTypes.TEXT,
     },
     created_date: {
       type: DataTypes.DATE,
