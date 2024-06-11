@@ -26,7 +26,7 @@ const User = db.define(
       allowNull: false,
       unique: true,
     },
-    numberPhone: {
+    number_phone: {
       type: DataTypes.STRING,
       unique: true,
     },
