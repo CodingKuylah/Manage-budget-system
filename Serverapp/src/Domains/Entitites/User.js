@@ -14,11 +14,25 @@ const User = db.define(
       allowNull: false,
       unique: true,
     },
-    name: {
+    first_name: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [5, 35],
+        len: [3, 35],
+      },
+    },
+    last_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [3, 35],
+      },
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [3, 35],
       },
     },
     email: {
