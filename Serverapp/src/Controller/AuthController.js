@@ -5,6 +5,7 @@ import Account from "../Domains/Entitites/Account.js";
 import User from "../Domains/Entitites/User.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import LoginResponse from "../Domains/Models/Responses/LoginResponse.js";
 
 function emailValidator(email) {
   const emailPattern = /^[^\s@]+@[^\s@]+\.(com|co\.id)$/i;
@@ -14,6 +15,8 @@ function emailValidator(email) {
 async function register(req, res) {
   try {
     const {
+      first_name,
+      last_name,
       username,
       password,
       confirm_password,
@@ -41,7 +44,9 @@ async function register(req, res) {
     const salt = await bcryptjs.genSalt();
     const hashPassword = await bcryptjs.hash(password, salt);
     const newUser = await User.create({
-      name: username,
+      first_name: first_name,
+      last_name: last_name,
+      username: username,
       email: email,
       number_phone: number_phone,
       gender: gender,
@@ -62,19 +67,19 @@ async function register(req, res) {
 
 async function login(req, res) {
   try {
-    const account = await Account.findAll({
+    const account = await Account.findOne({
       where: {
         username: req.body.username,
       },
     });
     const matching = await bcryptjs.compare(
       req.body.password,
-      account[0].password
+      account.password
     );
     if (!matching) {
       return handleResponse(res, req, 400, "Wrong password");
     }
-    const accountId = account[0].id;
+    const accountId = account.id;
     const accessToken = jwt.sign(
       { accountId },
       process.env.ACCESS_TOKEN_SECRET,
@@ -97,13 +102,24 @@ async function login(req, res) {
         },
       }
     );
+    const user = await User.findOne({
+      where: {
+        id: accountId,
+      },
+    });
+    const handlingResponse = new LoginResponse(
+      req.body.username,
+      user.email,
+      user.gender,
+      accessToken
+    );
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
       // secure true is used when this serverapp go live (for https)
       // secure: true
     });
-    res.json({ accessToken });
+    handleResponse(res, handlingResponse, 200, "Login is successfully ");
   } catch (error) {
     handleError(res, error);
   }
