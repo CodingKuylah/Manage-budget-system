@@ -6,6 +6,22 @@ import User from "../Domains/Entitites/User.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import LoginResponse from "../Domains/Models/Responses/LoginResponse.js";
+import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
+
+async function getAllUser(req, res) {
+  const { page, pageSize } = req.query;
+  const { limit, offset } = getPagination(page, pageSize);
+  try {
+    const data = await User.findAndCountAll({
+      limit: limit,
+      offset: offset,
+    });
+    const response = getPagingData(data, page, limit);
+    handleResponse(res, response, 200, "User successfully retrieved");
+  } catch (error) {
+    handleError(res, error);
+  }
+}
 
 function emailValidator(email) {
   const emailPattern = /^[^\s@]+@[^\s@]+\.(com|co\.id)$/i;
@@ -125,4 +141,19 @@ async function login(req, res) {
   }
 }
 
-export { register, login };
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) {
+    return res, null, 401, "Token is not valid";
+  }
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      return handleError(res, err);
+    }
+    req.username = decoded.username;
+    next();
+  });
+};
+
+export { getAllUser, register, login, verifyToken };
