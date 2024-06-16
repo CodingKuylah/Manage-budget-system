@@ -29,11 +29,11 @@ db.authenticate()
         });
       })
       .catch((error) => {
-        console.error("failed to connect to database");
+        console.error("failed to connect to database" + error);
       });
   })
   .catch((error) => {
-    console.error("cannot connect to database");
+    console.error("cannot connect to database" + error);
   });
 
 app.use(BudgetRoute, IncomeRoute, OutcomeRoute, HistoriesRoute, AuthRoute);
