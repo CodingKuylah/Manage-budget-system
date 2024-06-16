@@ -34,6 +34,17 @@ const Account = db.define(
     refresh_token: {
       type: DataTypes.TEXT,
     },
+    account_status: {
+      type: DataTypes.ENUM,
+      values: [
+        "ACCOUNT_DELETED",
+        "ACCOUNT_BANNED",
+        "UNVERIFIED",
+        "VERIFIED",
+        "LOGIN_FAILED_ONCE",
+        "LOGIN_FAILED_TWICE",
+      ],
+    },
     created_date: {
       type: DataTypes.DATE,
       allowNull: false,
