@@ -7,6 +7,13 @@ import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import LoginResponse from "../Domains/Models/Responses/LoginResponse.js";
 import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
+import { v4 as uuid } from "uuid";
+import VerifyResponse from "../Domains/Models/Responses/VerifyResponse.js";
+
+function emailValidator(email) {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.(com|co\.id)$/i;
+  return emailPattern.test(email);
+}
 
 async function getAllUser(req, res) {
   const { page, pageSize } = req.query;
@@ -23,12 +30,8 @@ async function getAllUser(req, res) {
   }
 }
 
-function emailValidator(email) {
-  const emailPattern = /^[^\s@]+@[^\s@]+\.(com|co\.id)$/i;
-  return emailPattern.test(email);
-}
-
 async function register(req, res) {
+  const generatedVerificationCode = uuid().toString();
   try {
     const {
       first_name,
@@ -68,14 +71,57 @@ async function register(req, res) {
       gender: gender,
     });
 
-    await Account.create({
+    const newAccount = await Account.create({
       id: newUser.id,
       username: username,
       password: hashPassword,
+      verification_code: generatedVerificationCode,
+      account_status: "UNVERIFIED",
     });
 
-    const handlingResponse = new RegisterResponse(username, password);
+    const handlingResponse = new RegisterResponse(
+      username,
+      password,
+      generatedVerificationCode,
+      newAccount.account_status
+    );
     handleResponse(res, handlingResponse, 200, "Register is successfully");
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
+async function verifyAccount(req, res) {
+  const { username, verification_code } = req.body;
+  try {
+    const account = await Account.findOne({
+      where: {
+        username: username,
+        verification_code: verification_code,
+      },
+    });
+    if (account == null) {
+      return handleResponse(res, req.body, 404, "Account is not found");
+    }
+    if (account.verification_code === verification_code) {
+      await Account.update(
+        { account_status: "VERIFIED", verification_code: null },
+        {
+          where: {
+            username: account.username,
+          },
+        }
+      );
+      const handlingResponse = new VerifyResponse(account.username, "VERIFIED");
+      return handleResponse(
+        res,
+        handlingResponse,
+        200,
+        "Verification account is successfully completed"
+      );
+    } else {
+      return handleResponse(res, account, 400, "Invalid verification code");
+    }
   } catch (error) {
     handleError(res, error);
   }
@@ -156,4 +202,4 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-export { getAllUser, register, login, verifyToken };
+export { getAllUser, register, verifyAccount, login, verifyToken };
