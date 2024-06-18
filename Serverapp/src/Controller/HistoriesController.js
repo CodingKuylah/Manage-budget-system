@@ -1,14 +1,14 @@
 import { handleError } from "../Domains/Constants/HandleError.js";
 import { handleResponse } from "../Domains/Constants/HandleResponse.js";
-import Histories from "../Domains/Entitites/Histories.js";
 import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
+import BudgetHistories from "../Domains/Entitites/Histories/BudgetHistories.js";
 
 async function getHistoryById(req, res) {
   const historyId = req.params.id;
   const { page, pageSize } = req.query;
   const { limit, offset } = getPagination(page, pageSize);
   try {
-    const data = await Histories.findAndCountAll({
+    const data = await BudgetHistories.findAndCountAll({
       where: {
         id: historyId,
       },
@@ -31,7 +31,7 @@ async function getAllHistories(req, res) {
   const { limit, offset } = getPagination(page, pageSize);
 
   try {
-    const data = await Histories.findAndCountAll({
+    const data = await BudgetHistories.findAndCountAll({
       limit: limit,
       offset: offset,
     });
@@ -48,7 +48,7 @@ async function getAllHistoriesByBudgetId(req, res) {
   const { limit, offset } = getPagination(page, pageSize);
 
   try {
-    const data = await Histories.findAndCountAll({
+    const data = await BudgetHistories.findAndCountAll({
       where: {
         budgetId: budgetId,
       },
@@ -74,7 +74,7 @@ async function getAllHistoryByIncomeId(req, res) {
   const { limit, offset } = getPagination(page, pageSize);
 
   try {
-    const data = await Histories.findAndCountAll({
+    const data = await BudgetHistories.findAndCountAll({
       where: {
         incomeId: incomeId,
       },
@@ -100,7 +100,7 @@ async function getAllHistoryByOutcomeId(req, res) {
   const { limit, offset } = getPagination(page, pageSize);
 
   try {
-    const data = await Histories.findAndCountAll({
+    const data = await BudgetHistories.findAndCountAll({
       where: {
         outcomeId: outcomeId,
       },
