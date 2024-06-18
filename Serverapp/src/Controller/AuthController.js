@@ -9,6 +9,7 @@ import LoginResponse from "../Domains/Models/Responses/LoginResponse.js";
 import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
 import { v4 as uuid } from "uuid";
 import VerifyResponse from "../Domains/Models/Responses/VerifyResponse.js";
+import ClientHistories from "../Domains/Entitites/Histories/ClientHistories.js";
 
 function emailValidator(email) {
   const emailPattern = /^[^\s@]+@[^\s@]+\.(com|co\.id)$/i;
@@ -77,6 +78,17 @@ async function register(req, res) {
       password: hashPassword,
       verification_code: generatedVerificationCode,
       account_status: "UNVERIFIED",
+    });
+
+    await ClientHistories.create({
+      username: username,
+      password: hashPassword,
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      number_phone: number_phone,
+      account_status: "UNVERIFIED",
+      type: "REGISTER",
     });
 
     const handlingResponse = new RegisterResponse(
