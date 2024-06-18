@@ -3,7 +3,7 @@ import User from "../User.js";
 import Budget from "../Budget.js";
 import Income from "../Income.js";
 import Outcome from "../Outcome.js";
-import Histories from "../Histories.js";
+import Histories from "../Histories/BudgetHistories.js";
 
 // relation one to one between account and user
 Account.belongsTo(User, {
