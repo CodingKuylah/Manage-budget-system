@@ -69,7 +69,7 @@ const Account = db.define(
   },
   {
     freezeTableName: true,
-    timestamps: true,
+    timestamps: false,
   }
 );
 
