@@ -6,7 +6,7 @@ import BudgetRequest from "../Domains/Models/Requests/BudgetRequest.js";
 import Income from "../Domains/Entitites/Income.js";
 import Outcome from "../Domains/Entitites/Outcome.js";
 import BudgetResponse from "../Domains/Models/Responses/BudgetResponse.js";
-import Histories from "../Domains/Entitites/Histories.js";
+import BudgetHistories from "../Domains/Entitites/Histories/BudgetHistories.js";
 
 async function getById(req, res) {
   try {
@@ -80,7 +80,7 @@ async function createBudget(req, res) {
       amount: 0.0,
     });
 
-    const newHistory = await Histories.create({
+    const newHistory = await BudgetHistories.create({
       title: budgetRequest.title,
       description: budgetRequest.description,
       amount: 0.0,
