@@ -4,7 +4,7 @@ import { handleError } from "../Domains/Constants/HandleError.js";
 import { handleResponse } from "../Domains/Constants/HandleResponse.js";
 import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
 import Budget from "../Domains/Entitites/Budget.js";
-import Histories from "../Domains/Entitites/Histories.js";
+import BudgetHistories from "../Domains/Entitites/Histories/BudgetHistories.js";
 
 async function getIncomeById(req, res) {
   try {
@@ -93,7 +93,7 @@ async function plusIncomeValue(req, res) {
       parseFloat(budget.total_balance) + parseFloat(amount);
     await budget.save();
 
-    const newHistory = await Histories.create({
+    const newHistory = await BudgetHistories.create({
       title: title,
       description: description,
       amount: amount,
