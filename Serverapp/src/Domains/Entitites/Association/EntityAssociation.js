@@ -3,7 +3,8 @@ import User from "../User.js";
 import Budget from "../Budget.js";
 import Income from "../Income.js";
 import Outcome from "../Outcome.js";
-import Histories from "../Histories/BudgetHistories.js";
+import BudgetHistories from "../Histories/BudgetHistories.js";
+import ClientHistories from "../Histories/ClientHistories.js";
 
 // relation one to one between account and user
 Account.belongsTo(User, {
@@ -17,6 +18,10 @@ User.hasOne(Account, {
 });
 // relation one to one between account and user end
 
+// relation one to many between user and ClientHistories
+User.hasMany(ClientHistories, { foreignKey: "userId" });
+// relation one to many between user and ClientHistories end
+
 // relation one to many between budget and income
 Budget.hasMany(Income, { foreignKey: "budgetId" });
 // relation one to many between budget and income end
@@ -25,14 +30,14 @@ Budget.hasMany(Income, { foreignKey: "budgetId" });
 Budget.hasMany(Outcome, { foreignKey: "budgetId" });
 // relation one to many between budget and income end
 
-// relation one to many between budget and histories
-Budget.hasMany(Histories, { foreignKey: "budgetId" });
-// relation one to many between budget and histories end
+// relation one to many between budget and BudgetHistories
+Budget.hasMany(BudgetHistories, { foreignKey: "budgetId" });
+// relation one to many between budget and BudgetHistories end
 
-// relation one to many between income and histories
-Income.hasMany(Histories, { foreignKey: "incomeId" });
-// relation one to many between income and histories end
+// relation one to many between income and BudgetHistories
+Income.hasMany(BudgetHistories, { foreignKey: "incomeId" });
+// relation one to many between income and BudgetHistories end
 
-// relation one to many between outcome and histories
-Outcome.hasMany(Histories, { foreignKey: "outcomeId" });
-// relation one to many between outcome and histories end
+// relation one to many between outcome and BudgetHistories
+Outcome.hasMany(BudgetHistories, { foreignKey: "outcomeId" });
+// relation one to many between outcome and BudgetHistories end
