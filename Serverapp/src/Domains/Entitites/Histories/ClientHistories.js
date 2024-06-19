@@ -37,7 +37,6 @@ const ClientHistories = db.define(
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
       unique: true,
     },
     number_phone: {
