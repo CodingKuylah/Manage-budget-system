@@ -89,6 +89,7 @@ async function register(req, res) {
       number_phone: number_phone,
       account_status: "UNVERIFIED",
       type: "REGISTER",
+      userId: newUser.id,
     });
 
     const handlingResponse = new RegisterResponse(
@@ -124,6 +125,16 @@ async function verifyAccount(req, res) {
           },
         }
       );
+      await ClientHistories.create({
+        username: username,
+        password: null,
+        first_name: null,
+        last_name: null,
+        email: null,
+        account_status: "VERIFIED",
+        type: "VERIFY_ACCOUNT",
+        userId: account.id,
+      });
       const handlingResponse = new VerifyResponse(account.username, "VERIFIED");
       return handleResponse(
         res,
@@ -146,54 +157,77 @@ async function login(req, res) {
         username: req.body.username,
       },
     });
-    const matching = await bcryptjs.compare(
-      req.body.password,
-      account.password
-    );
-    if (!matching) {
-      return handleResponse(res, req, 400, "Wrong password");
-    }
-    const accountId = account.id;
-    const accessToken = jwt.sign(
-      { accountId },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: "20s",
+    console.info(account.account_status);
+
+    if (
+      account.account_status === "VERIFIED" ||
+      account.account_status === "LOGIN_FAILED_ONCE" ||
+      account.account_status === "LOGIN_FAILED_TWICE"
+    ) {
+      const matching = await bcryptjs.compare(
+        req.body.password,
+        account.password
+      );
+      if (!matching) {
+        await Account.update(
+          { account_status: "LOGIN_FAILED_ONCE" },
+          {
+            where: {
+              username: account.username,
+            },
+          }
+        );
+        return handleResponse(res, req, 400, "Wrong password");
       }
-    );
-    const refreshToken = jwt.sign(
-      { accountId },
-      process.env.REFRESH_TOKEN_SECRET,
-      {
-        expiresIn: "1d",
-      }
-    );
-    await Account.update(
-      { refresh_token: refreshToken },
-      {
+      const accountId = account.id;
+      const accessToken = jwt.sign(
+        { accountId },
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+          expiresIn: "20s",
+        }
+      );
+      const refreshToken = jwt.sign(
+        { accountId },
+        process.env.REFRESH_TOKEN_SECRET,
+        {
+          expiresIn: "1d",
+        }
+      );
+      await Account.update(
+        { refresh_token: refreshToken },
+        {
+          where: {
+            id: accountId,
+          },
+        }
+      );
+      const user = await User.findOne({
         where: {
           id: accountId,
         },
-      }
-    );
-    const user = await User.findOne({
-      where: {
-        id: accountId,
-      },
-    });
-    const handlingResponse = new LoginResponse(
-      req.body.username,
-      user.email,
-      user.gender,
-      accessToken
-    );
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-      // secure true is used when this serverapp go live (for https)
-      // secure: true
-    });
-    handleResponse(res, handlingResponse, 200, "Login is successfully ");
+      });
+      const handlingResponse = new LoginResponse(
+        req.body.username,
+        user.email,
+        user.gender,
+        accessToken
+      );
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+        // secure true is used when this serverapp go live (for https)
+        // secure: true
+      });
+      handleResponse(res, handlingResponse, 200, "Login is successfully ");
+    } else {
+      return handleResponse(
+        res,
+        req.body.username,
+        401,
+        "Your account is not verified"
+      );
+    }
   } catch (error) {
     handleError(res, error);
   }
