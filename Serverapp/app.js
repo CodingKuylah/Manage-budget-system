@@ -1,8 +1,7 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 import BudgetRoute from "./src/Routes/BudgetRoute.js";
 import IncomeRoute from "./src/Routes/IncomeRoute.js";
