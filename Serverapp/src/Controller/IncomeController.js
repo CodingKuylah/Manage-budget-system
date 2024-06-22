@@ -5,6 +5,7 @@ import { handleResponse } from "../Domains/Constants/HandleResponse.js";
 import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
 import Budget from "../Domains/Entitites/Budget.js";
 import BudgetHistories from "../Domains/Entitites/Histories/BudgetHistories.js";
+import UserIncome from "../Domains/Entitites/TransactionalTable/UserIncome.js";
 
 async function getIncomeById(req, res) {
   try {
@@ -67,6 +68,7 @@ async function deleteIncome(req, res) {
 async function plusIncomeValue(req, res) {
   const incomeId = req.params.incomeId;
   const { title, description, amount, budgetId } = req.body;
+  const userID = req.username;
   try {
     const income = await Income.findOne({
       where: {
@@ -75,11 +77,12 @@ async function plusIncomeValue(req, res) {
       },
     });
     if (!income) {
-      handleResponse(res, null, 404, "income id is not found!");
+      return handleResponse(res, null, 404, "income id is not found!");
     }
     income.title = title;
     income.description = description;
     income.amount = amount;
+    income.budgetId = budgetId;
     await income.save();
 
     const budget = await Budget.findOne({
@@ -93,7 +96,7 @@ async function plusIncomeValue(req, res) {
       parseFloat(budget.total_balance) + parseFloat(amount);
     await budget.save();
 
-    const newHistory = await BudgetHistories.create({
+    await BudgetHistories.create({
       title: title,
       description: description,
       amount: amount,
@@ -102,11 +105,13 @@ async function plusIncomeValue(req, res) {
       created_by: "Testing by system",
       incomeId: incomeId,
       budgetId: budgetId,
+      userId: userID,
     });
 
     const handlingResponse = new IncomeResponse(
       income.id,
       budget.id,
+      userID,
       budget.title,
       budget.description,
       income.amount,
