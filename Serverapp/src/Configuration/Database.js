@@ -1,4 +1,9 @@
 import { Sequelize } from "sequelize";
+import {
+  DATABASE_PASSWORD,
+  DATABASE_TABLE,
+  DATABASE_USERNAME,
+} from "../CredentialData/Credential.js";
 
 // const db = new Sequelize(
 //   process.env.DATABASE_TABLE,
@@ -12,8 +17,7 @@ import { Sequelize } from "sequelize";
 //   }
 // );
 
-console.info(process.env.DATABASE_TABLE);
-const db = new Sequelize("db_MANAGEMENT_BUDGET_SYSTEM", "root", "", {
+const db = new Sequelize(DATABASE_TABLE, DATABASE_USERNAME, DATABASE_PASSWORD, {
   host: "localhost",
   dialect: "mysql",
   logging: console.log,
