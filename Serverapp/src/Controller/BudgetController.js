@@ -7,6 +7,9 @@ import Income from "../Domains/Entitites/Income.js";
 import Outcome from "../Domains/Entitites/Outcome.js";
 import BudgetResponse from "../Domains/Models/Responses/BudgetResponse.js";
 import BudgetHistories from "../Domains/Entitites/Histories/BudgetHistories.js";
+import UserBudget from "../Domains/Entitites/TransactionalTable/UserBudget.js";
+import UserIncome from "../Domains/Entitites/TransactionalTable/UserIncome.js";
+import UserOutcome from "../Domains/Entitites/TransactionalTable/UserOutcome.js";
 
 async function getById(req, res) {
   try {
@@ -41,8 +44,8 @@ async function getAllBudget(req, res) {
   }
 }
 
-async function createBudget(req, res) {
-  const { title, description, total_balance } = req.body;
+async function createSingleBudget(req, res) {
+  const { title, description, total_balance, userId } = req.body;
   const budgetRequest = new BudgetRequest(title, description, total_balance);
   const validationErrors = budgetRequest.validate();
 
@@ -65,7 +68,7 @@ async function createBudget(req, res) {
       title: "Default",
       description: "Default by system",
       created_by: "System",
-      BudgetId: newBudget.id,
+      budgetId: newBudget.id,
       updated_by: "System",
       amount: 0.0,
     });
@@ -75,12 +78,12 @@ async function createBudget(req, res) {
       description: "Default by system",
       approval_status: "APPROVED",
       created_by: "System",
-      BudgetId: newBudget.id,
+      budgetId: newBudget.id,
       updated_by: "System",
       amount: 0.0,
     });
 
-    const newHistory = await BudgetHistories.create({
+    await BudgetHistories.create({
       title: budgetRequest.title,
       description: budgetRequest.description,
       amount: 0.0,
@@ -92,12 +95,28 @@ async function createBudget(req, res) {
       budgetId: newBudget.id,
     });
 
+    await UserBudget.create({
+      userId: userId,
+      budgetId: newBudget.id,
+    });
+
+    await UserIncome.create({
+      userId: userId,
+      incomeId: newIncome.id,
+    });
+
+    await UserOutcome.create({
+      userId: userId,
+      outcomeId: newOutcome.id,
+    });
+
     const handlingResponse = new BudgetResponse(
       newBudget.id,
       newBudget.title,
       newBudget.description,
       newIncome.id,
-      newOutcome.id
+      newOutcome.id,
+      userId
     );
     handleResponse(res, handlingResponse, 200, "Budget successfully created !");
   } catch (error) {
@@ -125,4 +144,4 @@ async function deleteBudget(req, res) {
     handleError(res, error);
   }
 }
-export { getById, getAllBudget, createBudget, deleteBudget };
+export { getById, getAllBudget, createSingleBudget, deleteBudget };
