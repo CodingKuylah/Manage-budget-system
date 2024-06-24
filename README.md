@@ -1,60 +1,60 @@
 # MANAGE BUDGET SYSTEM 
 
-Manage Budget System adalah platform yang memungkinkan pengguna untuk mengatur keuangan pribadi mereka serta berbagi dan mengelola keuangan dengan pengguna lain. Aplikasi ini dibangun menggunakan Node.js versi 20.10.0 dan React versi terbaru.
+Manage Budget System is a platform that allows users to manage their personal finances as well as share and collaborate on finances with other users. This application is built using Node.js version 20.10.0 and the latest React version.
 
-## Fitur Utama
+## Main Feature
 
-- **Manajemen Keuangan Pribadi**: Pengguna dapat melacak pengeluaran, pendapatan, dan tabungan mereka secara individu.
-- **Berbagi Keuangan**: Pengguna dapat membuat grup keuangan dan mengundang pengguna lain untuk berbagi keuangan dan mengelola anggaran bersama.
-- **Pengingat dan Notifikasi**: Aplikasi memberikan pengingat untuk tagihan yang jatuh tempo, pengeluaran berlebih, dan sinyal lain yang berguna untuk manajemen keuangan.
-- **Analisis dan Laporan**: Fitur analisis menyediakan grafik dan laporan untuk membantu pengguna memahami pola pengeluaran dan menetapkan tujuan keuangan.
-- **Keamanan**: Keamanan data pengguna dijamin dengan enkripsi end-to-end dan sistem autentikasi yang kuat.
+- **Personal Finance Management**: Users can track their expenses, income, and savings individually.
+- **Financial Sharing**: Users can create financial groups and invite others to share and manage budgets together.
+- **Reminders and Notifications**: The application provides reminders for due bills, overspending alerts, and other useful signals for financial management.
+- **Analysis and Reports**: Analytical features offer graphs and reports to help users understand spending patterns and set financial goals.
+- **Security**: User data security is ensured with end-to-end encryption and a robust authentication system.
 
-## Instalasi
+## Installation
 
-1. Pastikan Anda memiliki Node.js versi 20.10.0 atau yang lebih baru diinstal di komputer Anda.
-2. Kloning repositori ini ke komputer lokal Anda:
-
-    ```bash
-    git clone https://github.com/nama-organisasi/aplikasi-keuangan.git
-    ```
-
-3. Masuk ke direktori aplikasi:
+1. Ensure you have Node.js version 20.10.0 or newer installed on your computer.
+2. Clone this repository to your local machine:
 
     ```bash
-    cd aplikasi-keuangan
+    git clone https://github.com/CodingKuylah/Manage-budget-system.git
     ```
 
-4. Instal dependensi:
+3. Navigate to the application directory:
+
+    ```bash
+    cd serverapp
+    ```
+
+4. Instal dependency:
 
     ```bash
     npm install
     ```
 
-## Penggunaan
+## Usage
 
-1. Mulai server Node.js:
+1. Start the mysql (laragon, xampp, mampp)
+   
+2. Start the Node.js server::
 
     ```bash
     npm run mbs-dev:start
     ```
 
-2. Buka aplikasi di browser dengan alamat `http://localhost:3000`.
+3. Open the application in your browser at  `http://localhost:5000`.
 
-3. Daftar atau masuk dengan akun Anda.
+4. Begin tracking your personal finances or start creating and managing financial groups with other users.
 
-4. Mulai melacak keuangan pribadi Anda atau mulai membuat dan mengelola grup keuangan bersama pengguna lain.
+## Contribution
 
-## Kontribusi
+We welcome contributions from the community! If you would like to contribute to this project, please follow the steps below:
 
-Kami senang menerima kontribusi dari komunitas! Jika Anda ingin berkontribusi pada proyek ini, silakan ikuti langkah-langkah di bawah ini:
+1. Fork this repository.
+2. Create a new feature branch (git checkout -b new-feature).
+3. Make necessary changes and commit (git commit -am 'Add new feature').
+4. Push to your feature branch (git push origin new-feature).
+5. Create a pull request.
 
-1. Fork repositori ini.
-2. Buat cabang fitur baru (`git checkout -b fitur-baru`).
-3. Lakukan perubahan yang diperlukan dan lakukan commit (`git commit -am 'Menambahkan fitur baru'`).
-4. Push ke cabang fitur Anda (`git push origin fitur-baru`).
-5. Buat pull request.
+## License
 
-## Lisensi
-
-Aplikasi Keuangan Pribadi & Berbagi dilisensikan di bawah Lisensi MIT. Lihat [LICENSE](LICENSE) untuk detailnya.
+Personal & Shared Finance App is licensed under the MIT License. See the LICENSE file for details.
