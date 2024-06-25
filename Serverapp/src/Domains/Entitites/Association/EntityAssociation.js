@@ -45,6 +45,10 @@ Income.hasMany(BudgetHistories, { foreignKey: "incomeId" });
 Outcome.hasMany(BudgetHistories, { foreignKey: "outcomeId" });
 // relation one to many between outcome and BudgetHistories end
 
+// relation one to many between user and BudgetHistories
+User.hasMany(BudgetHistories, { foreignKey: "userId" });
+// relation one to many between user and BudgetHistories end
+
 // relation many to many between user and budget
 User.belongsToMany(Budget, { through: UserBudget, foreignKey: "userId" });
 Budget.belongsToMany(User, { through: UserBudget, foreignKey: "budgetId" });
