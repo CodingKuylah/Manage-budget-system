@@ -65,7 +65,6 @@ async function createSingleBudget(req, res) {
     });
 
     const newIncome = await Income.create({
-      title: "Default",
       description: "Default by system",
       created_by: "System",
       budgetId: newBudget.id,
@@ -74,7 +73,6 @@ async function createSingleBudget(req, res) {
     });
 
     const newOutcome = await Outcome.create({
-      title: "Default",
       description: "Default by system",
       approval_status: "APPROVED",
       created_by: "System",
