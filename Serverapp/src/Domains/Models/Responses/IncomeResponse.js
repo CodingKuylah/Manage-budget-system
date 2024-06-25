@@ -1,7 +1,16 @@
 class IncomeResponse {
-  constructor(incomeId, budgetId, title, description, amount, total_balance) {
+  constructor(
+    incomeId,
+    budgetId,
+    userId,
+    title,
+    description,
+    amount,
+    total_balance
+  ) {
     this.incomeId = incomeId;
     this.budgetId = budgetId;
+    this.userId = userId;
     this.title = title;
     this.description = description;
     this.amount = amount;
