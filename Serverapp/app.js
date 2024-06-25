@@ -10,8 +10,10 @@ import HistoriesRoute from "./src/Routes/HistoriesRoute.js";
 import AuthRoute from "./src/Routes/AuthRoute.js";
 import db from "./src/Configuration/Database.js";
 import "./src/Domains/Entitites/Association/EntityAssociation.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
+app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 
