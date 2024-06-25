@@ -13,13 +13,6 @@ const Income = db.define(
       defaultValue: () => uuid4(),
       allowNull: false,
     },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        len: [5, 150],
-      },
-    },
     description: {
       type: DataTypes.STRING,
       allowNull: true,
