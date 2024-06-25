@@ -40,7 +40,7 @@ async function getAllOutcome(req, res) {
 
 async function minusOutcomeValue(req, res) {
   const outcomeId = req.params.outcomeId;
-  const { title, description, amount, approval_status, budgetId } = req.body;
+  const { description, amount, approval_status, budgetId, userId } = req.body;
   try {
     const outcome = await Outcome.findOne({
       where: {
@@ -51,7 +51,6 @@ async function minusOutcomeValue(req, res) {
     if (!outcome) {
       handleResponse(res, null, 404, "Outcome id is not found!");
     }
-    outcome.title = title;
     outcome.description = description;
     outcome.amount = amount;
     outcome.approval_status = approval_status;
@@ -75,8 +74,8 @@ async function minusOutcomeValue(req, res) {
       parseFloat(budget.total_balance) - parseFloat(amount);
     await budget.save();
 
-    const newHistory = await BudgetHistories.create({
-      title: title,
+    await BudgetHistories.create({
+      title: budget.title,
       description: description,
       amount: amount,
       total_balance: budget.total_balance,
@@ -84,6 +83,7 @@ async function minusOutcomeValue(req, res) {
       created_by: "System",
       outcomeId: outcomeId,
       budgetId: budgetId,
+      userId: userId,
     });
 
     const handlingResponse = new OutcomeResponse(
