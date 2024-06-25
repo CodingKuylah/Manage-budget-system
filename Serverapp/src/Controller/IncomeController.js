@@ -67,7 +67,7 @@ async function deleteIncome(req, res) {
 
 async function plusIncomeValue(req, res) {
   const incomeId = req.params.incomeId;
-  const { title, description, amount, budgetId } = req.body;
+  const { description, amount, budgetId } = req.body;
   const userID = req.username;
   try {
     const income = await Income.findOne({
@@ -79,7 +79,6 @@ async function plusIncomeValue(req, res) {
     if (!income) {
       return handleResponse(res, null, 404, "income id is not found!");
     }
-    income.title = title;
     income.description = description;
     income.amount = amount;
     income.budgetId = budgetId;
@@ -97,7 +96,7 @@ async function plusIncomeValue(req, res) {
     await budget.save();
 
     await BudgetHistories.create({
-      title: title,
+      title: budget.title,
       description: description,
       amount: amount,
       total_balance: budget.total_balance,
