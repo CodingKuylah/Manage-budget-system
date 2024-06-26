@@ -172,46 +172,6 @@ async function login(req, res) {
         req.body.password,
         account.password
       );
-      // refactor matching
-      // if (!matching) {
-      //   if (account.account_status === "VERIFIED") {
-      //     await Account.update(
-      //       { account_status: "LOGIN_FAILED_ONCE" },
-      //       {
-      //         where: {
-      //           username: account.username,
-      //         },
-      //       }
-      //     );
-      //     return handleResponse(res, req, 400, "Wrong password");
-      //   } else if (account.account_status === "LOGIN_FAILED_ONCE") {
-      //     await Account.update(
-      //       { account_status: "LOGIN_FAILED_TWICE" },
-      //       {
-      //         where: {
-      //           username: account.username,
-      //         },
-      //       }
-      //     );
-      //     return handleResponse(res, req, 400, "Wrong password");
-      //   } else {
-      //     await Account.update(
-      //       { account_status: "ACCOUNT_BANNED" },
-      //       {
-      //         where: {
-      //           username: account.username,
-      //         },
-      //       }
-      //     );
-      //     return handleResponse(
-      //       res,
-      //       req,
-      //       400,
-      //       "Wrong password. Your account has banned"
-      //     );
-      //   }
-      // }
-      // refactor matching end
       if (!matching) {
         let newStatus = "LOGIN_FAILED_ONCE";
         let message = "Wrong password";
@@ -282,36 +242,6 @@ async function login(req, res) {
   }
 }
 
-// const refreshAccessToken = (req, res) => {
-//   const refreshedToken = req.cookie.refreshToken;
-
-//   if (!refreshedToken) {
-//     return handleResponse(res, null, 401, "No refresh token provided");
-//   }
-//   try {
-//     jwt.verify(refreshedToken, REFRESH_TOKEN_SECRET, async (err, decoded) => {
-//       if (err) {
-//         return handleResponse(res, null, 403, "Invalid refresh token");
-//       }
-//       const account = await Account.findOne({
-//         where: {
-//           refresh_token: refreshedToken,
-//         },
-//       });
-//       if (!account)
-//         return handleResponse(res, null, 403, "Refresh token not found");
-//       const accessToken = jwt.sign(
-//         { accountId: account.id },
-//         ACCESS_TOKEN_SECRET,
-//         { expiresIn: "20s" }
-//       );
-//       handleResponse(res, { accessToken }, 200, "Access token refreshed");
-//     });
-//   } catch (error) {
-//     handleError(res, error);
-//   }
-// };
-
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
@@ -327,6 +257,44 @@ const verifyToken = (req, res, next) => {
   });
 };
 
+const refreshAccessToken = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  if (!refreshToken) {
+    return handleResponse(res, null, 401, "No refresh token provided");
+  }
+
+  try {
+    jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, async (err, decoded) => {
+      if (err) {
+        return handleResponse(res, null, 403, "invalid refresh token");
+      }
+
+      const account = await Account.findOne({
+        where: {
+          refresh_token: refreshToken,
+        },
+      });
+
+      if (!account) {
+        return handleResponse(res, null, 403, "Refresh token is not found");
+      }
+
+      const newAccessToken = jwt.sign(
+        { accountId: account.id },
+        ACCESS_TOKEN_SECRET,
+        {
+          expiresIn: "2h",
+        }
+      );
+
+      handleResponse(res, newAccessToken, 200, "Access token refreshed");
+    });
+  } catch (err) {
+    handleError(res, err);
+  }
+};
+
 export {
   getAllUser,
   register,
@@ -334,4 +302,5 @@ export {
   login,
   verifyToken,
   // refreshAccessToken,
+  refreshAccessToken,
 };
