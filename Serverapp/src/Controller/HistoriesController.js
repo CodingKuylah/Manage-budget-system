@@ -4,36 +4,27 @@ import { getPagination, getPagingData } from "../Utils/PaginationUtils.js";
 import BudgetHistories from "../Domains/Entitites/Histories/BudgetHistories.js";
 
 async function getHistoryById(req, res) {
-  const historyId = req.params.id;
-  const { page, pageSize } = req.query;
-  const { limit, offset } = getPagination(page, pageSize);
   try {
     const data = await BudgetHistories.findAndCountAll({
       where: {
-        id: historyId,
+        id: req.params.id,
       },
-      limit: limit,
-      offset: offset,
     });
-    const response = getPagingData(data, page, limit);
-    if (data.rows.length > 0) {
-      handleResponse(res, response, 200, "History successfully retrieved");
-    } else {
-      res.status(404).json({ error: "History with id is not found" });
-    }
+    handleResponse(res, data, 200, "History successfully retrieved");
   } catch (error) {
     handleError(res, error);
   }
 }
 
 async function getAllHistories(req, res) {
-  const { page, pageSize } = req.query;
+  const { page, pageSize, order = "DESC" } = req.query;
   const { limit, offset } = getPagination(page, pageSize);
 
   try {
     const data = await BudgetHistories.findAndCountAll({
       limit: limit,
       offset: offset,
+      order: [["created_date", order]],
     });
     const response = getPagingData(data, page, limit);
     res.send(response);
@@ -77,6 +68,7 @@ async function getAllHistoryByIncomeId(req, res) {
     const data = await BudgetHistories.findAndCountAll({
       where: {
         incomeId: incomeId,
+        type: "INCOME",
       },
       limit: limit,
       offset: offset,
@@ -86,7 +78,7 @@ async function getAllHistoryByIncomeId(req, res) {
       handleResponse(res, response, 200, "History successfully retrieved");
     } else {
       res.status(404).json({
-        error: "History with income id is not found",
+        error: "History is not found",
       });
     }
   } catch (error) {
@@ -103,6 +95,7 @@ async function getAllHistoryByOutcomeId(req, res) {
     const data = await BudgetHistories.findAndCountAll({
       where: {
         outcomeId: outcomeId,
+        type: "OUTCOME",
       },
       limit: limit,
       offset: offset,
@@ -112,7 +105,7 @@ async function getAllHistoryByOutcomeId(req, res) {
       handleResponse(res, response, 200, "History successfully retrieved");
     } else {
       res.status(404).json({
-        error: "History with outcome id is not found",
+        error: "History is not found",
       });
     }
   } catch (error) {
