@@ -1,5 +1,6 @@
 class LoginResponse {
-  constructor(username, email, gender, access_token) {
+  constructor(userId, username, email, gender, access_token) {
+    this.userId = userId;
     this.username = username;
     this.email = email;
     this.gender = gender;
