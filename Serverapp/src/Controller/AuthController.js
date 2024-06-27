@@ -139,7 +139,11 @@ async function verifyAccount(req, res) {
         type: "VERIFY_ACCOUNT",
         userId: account.id,
       });
-      const handlingResponse = new VerifyResponse(account.username, "VERIFIED");
+      const handlingResponse = new VerifyResponse(
+        account.id,
+        account.username,
+        "VERIFIED"
+      );
       return handleResponse(
         res,
         handlingResponse,
@@ -217,6 +221,7 @@ async function login(req, res) {
         },
       });
       const handlingResponse = new LoginResponse(
+        accountId,
         req.body.username,
         user.email,
         user.gender,
@@ -284,7 +289,7 @@ const refreshAccessToken = async (req, res) => {
         { accountId: account.id },
         ACCESS_TOKEN_SECRET,
         {
-          expiresIn: "2h",
+          expiresIn: "30m",
         }
       );
 
