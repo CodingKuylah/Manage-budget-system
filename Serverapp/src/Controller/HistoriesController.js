@@ -5,7 +5,7 @@ import BudgetHistories from "../Domains/Entitites/Histories/BudgetHistories.js";
 
 async function getHistoryById(req, res) {
   try {
-    const data = await BudgetHistories.findAndCountAll({
+    const data = await BudgetHistories.findOne({
       where: {
         id: req.params.id,
       },
@@ -113,10 +113,34 @@ async function getAllHistoryByOutcomeId(req, res) {
   }
 }
 
+async function getAllHistoryByUserId(req, res) {
+  const userId = req.params.userId;
+  const { page, pageSize } = req.query;
+  const { limit, offset } = getPagination(page, pageSize);
+  try {
+    const data = await BudgetHistories.findAndCountAll({
+      where: {
+        userId: userId,
+      },
+      limit: limit,
+      offset: offset,
+    });
+    const response = getPagingData(data, page, limit);
+    if (data.rows.length > 0) {
+      handleResponse(res, response, 200, "History successfully retrieved");
+    } else {
+      handleResponse(res, null, 403, "History is not found");
+    }
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
 export {
   getHistoryById,
   getAllHistories,
   getAllHistoriesByBudgetId,
   getAllHistoryByIncomeId,
   getAllHistoryByOutcomeId,
+  getAllHistoryByUserId,
 };
