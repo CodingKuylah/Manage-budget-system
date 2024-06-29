@@ -40,7 +40,8 @@ async function getAllOutcome(req, res) {
 
 async function minusOutcomeValue(req, res) {
   const outcomeId = req.params.outcomeId;
-  const { description, amount, approval_status, budgetId, userId } = req.body;
+  const userId = req.userId;
+  const { description, amount, approval_status, budgetId } = req.body;
   try {
     const outcome = await Outcome.findOne({
       where: {
@@ -70,6 +71,9 @@ async function minusOutcomeValue(req, res) {
         is_deleted: 0,
       },
     });
+    if (!budget) {
+      return handleResponse(res, req.body, 403, "Budget is not found");
+    }
     budget.total_balance =
       parseFloat(budget.total_balance) - parseFloat(amount);
     await budget.save();
@@ -89,6 +93,7 @@ async function minusOutcomeValue(req, res) {
     const handlingResponse = new OutcomeResponse(
       outcomeId,
       budgetId,
+      userId,
       outcome.title,
       outcome.description,
       outcome.amount,
