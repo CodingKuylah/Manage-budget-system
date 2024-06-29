@@ -2,6 +2,7 @@ class OutcomeResponse {
   constructor(
     outcomeId,
     budgetId,
+    userId,
     title,
     description,
     amount,
@@ -10,6 +11,7 @@ class OutcomeResponse {
   ) {
     this.outcomeId = outcomeId;
     this.budgetId = budgetId;
+    this.userId = userId;
     this.title = title;
     this.description = description;
     this.amount = amount;
