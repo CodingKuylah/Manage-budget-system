@@ -257,7 +257,9 @@ const verifyToken = (req, res, next) => {
     if (err) {
       return handleError(res, err);
     }
-    req.username = decoded.username;
+    // setting account id and decode. and then keep the value in req.userId
+    // the function who applied this verify token function is have req.userId
+    req.userId = decoded.accountId;
     next();
   });
 };
