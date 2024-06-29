@@ -5,6 +5,7 @@ import {
   getAllHistoriesByBudgetId,
   getAllHistoryByIncomeId,
   getAllHistoryByOutcomeId,
+  getAllHistoryByUserId,
 } from "../Controller/HistoriesController.js";
 import { baseRoute } from "./Base/BaseRoute.js";
 
@@ -15,5 +16,6 @@ router.get(baseRoute + "admin/history", getAllHistories);
 router.get(baseRoute + "history/budget/:budgetId", getAllHistoriesByBudgetId);
 router.get(baseRoute + "history/income/:incomeId", getAllHistoryByIncomeId);
 router.get(baseRoute + "history/outcome/:outcomeId", getAllHistoryByOutcomeId);
+router.get(baseRoute + "history/user/:userId", getAllHistoryByUserId);
 
 export default router;
