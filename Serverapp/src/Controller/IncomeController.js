@@ -68,7 +68,8 @@ async function deleteIncome(req, res) {
 async function plusIncomeValue(req, res) {
   const incomeId = req.params.incomeId;
   const { description, amount, budgetId } = req.body;
-  const userID = req.username;
+  // take user id on jwt token BUT must have implement verify token function from route
+  const userID = req.userId;
   try {
     const income = await Income.findOne({
       where: {
