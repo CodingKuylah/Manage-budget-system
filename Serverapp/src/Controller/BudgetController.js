@@ -44,6 +44,36 @@ async function getAllBudget(req, res) {
   }
 }
 
+async function connectBudgetAndUser(req, res) {
+  const userId = req.userId;
+  const { incomeId, outcomeId, budgetId } = req.body;
+
+  try {
+    await UserBudget.create({
+      userId: userId,
+      budgetId: budgetId,
+    });
+
+    await UserIncome.create({
+      userId: userId,
+      incomeId: incomeId,
+    });
+    await UserOutcome.create({
+      userId: userId,
+      outcomeId: outcomeId,
+    });
+
+    return handleResponse(
+      res,
+      req.body,
+      200,
+      "Budget and user successfuly connected"
+    );
+  } catch (err) {
+    handleError(res, err);
+  }
+}
+
 async function createSingleBudget(req, res) {
   const { title, description, total_balance, userId } = req.body;
   const budgetRequest = new BudgetRequest(title, description, total_balance);
@@ -112,6 +142,7 @@ async function createSingleBudget(req, res) {
       newBudget.id,
       newBudget.title,
       newBudget.description,
+      newBudget.total_balance,
       newIncome.id,
       newOutcome.id,
       userId
@@ -142,4 +173,10 @@ async function deleteBudget(req, res) {
     handleError(res, error);
   }
 }
-export { getById, getAllBudget, createSingleBudget, deleteBudget };
+export {
+  getById,
+  getAllBudget,
+  connectBudgetAndUser,
+  createSingleBudget,
+  deleteBudget,
+};
