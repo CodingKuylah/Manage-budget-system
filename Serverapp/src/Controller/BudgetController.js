@@ -75,7 +75,8 @@ async function connectBudgetAndUser(req, res) {
 }
 
 async function createSingleBudget(req, res) {
-  const { title, description, total_balance, userId } = req.body;
+  const { title, description, total_balance } = req.body;
+  const userId = req.userId;
   const budgetRequest = new BudgetRequest(title, description, total_balance);
   const validationErrors = budgetRequest.validate();
 
