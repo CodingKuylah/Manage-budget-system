@@ -14,7 +14,7 @@ const router = express.Router();
 router.get(baseRoute + "budget/:id", getById);
 router.get(baseRoute + "admin/budget", getAllBudget);
 router.post(baseRoute + "budget/connect", verifyToken, connectBudgetAndUser);
-router.post(baseRoute + "budget/insert", createSingleBudget);
+router.post(baseRoute + "budget/insert", verifyToken, createSingleBudget);
 router.delete(baseRoute + "admin/budget/:id", deleteBudget);
 
 export default router;
