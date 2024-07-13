@@ -8,9 +8,11 @@ import IncomeRoute from "./src/Routes/IncomeRoute.js";
 import OutcomeRoute from "./src/Routes/OutcomeRoute.js";
 import HistoriesRoute from "./src/Routes/HistoriesRoute.js";
 import AuthRoute from "./src/Routes/AuthRoute.js";
+import EmailRoute from "./src/Routes/EmailRoute.js";
 import db from "./src/Configuration/Database.js";
 import "./src/Domains/Entitites/Association/EntityAssociation.js";
 import cookieParser from "cookie-parser";
+import "./src/Controller/Scheduler/SchedulerController.js";
 
 const app = express();
 app.use(cookieParser());
@@ -37,4 +39,11 @@ db.authenticate()
     console.error("cannot connect to database" + error);
   });
 
-app.use(BudgetRoute, IncomeRoute, OutcomeRoute, HistoriesRoute, AuthRoute);
+app.use(
+  BudgetRoute,
+  IncomeRoute,
+  OutcomeRoute,
+  HistoriesRoute,
+  AuthRoute,
+  EmailRoute
+);

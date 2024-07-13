@@ -8,6 +8,7 @@ import ClientHistories from "../Histories/ClientHistories.js";
 import UserBudget from "../TransactionalTable/UserBudget.js";
 import UserIncome from "../TransactionalTable/UserIncome.js";
 import UserOutcome from "../TransactionalTable/UserOutcome.js";
+import OutcomeApproval from "../TransactionalTable/OutcomeApproval.js";
 
 // relation one to one between account and user
 Account.belongsTo(User, {
