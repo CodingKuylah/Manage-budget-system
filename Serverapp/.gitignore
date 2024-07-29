@@ -1,3 +1,5 @@
+.idea/
 .env*
+bun.lockb/
 node_modules/
 CredentialData/
