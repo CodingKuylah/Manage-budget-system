@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { MAIL_USERNAME, MAIL_PASSWORD } from "../CredentialData/Credential.js";
+import { MAIL_PASSWORD, MAIL_USERNAME } from "../CredentialData/Credential.js";
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
